@@ -1,6 +1,6 @@
 module V1
   class UsersController < ApplicationController
-    skip_before_action :authenticate_user_from_token!, only: [:create]
+    skip_before_action :authenticate_user_from_token!, only: [:index, :show, :create]
 
     def index
       render json: User.all
@@ -23,9 +23,38 @@ module V1
         render json: @user.errors, status: :unprocessable_entity
       end
     end
+
+    # PATCH/PUT /users/1
+    # PATCH/PUT /users/1.json
+    def update
+      @user = set_user
+      respond_to do |format|
+        if @user.update(user_params)
+          #format.html { redirect_to @user, notice: 'User was successfully updated.' }
+          format.json { render :show, status: :ok, location: @user }
+        else
+          #format.html { render :edit }
+          format.json { render json: @user.errors, status: :unprocessable_entity }
+        end
+      end
+    end
+
+    # DELETE /users/1
+    # DELETE /users/1.json
+    def destroy
+      @user.destroy
+      respond_to do |format|
+        #format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    end
+
+
+
+  private
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :name, :password, :password_confirmation)
+      params.require(:user).permit(:email, :username, :password, :password_confirmation)
     end
   end
 end

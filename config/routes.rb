@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :user, only: []
+  devise_for :users, only: []
 
   namespace :v1, defaults: { format: :json } do
+    get "/users/show" => "users#show", as: :user_url
     resources :users
+    resources :posts
     resource :login, only: [:create], controller: :sessions
   end
 end

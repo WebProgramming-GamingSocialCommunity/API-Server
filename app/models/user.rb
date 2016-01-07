@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   after_create :update_access_token!
 
-  validates :username, presence: true
-  validates :email, presence: true
-  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true  
+  validates :username, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   private
 
   def update_access_token!

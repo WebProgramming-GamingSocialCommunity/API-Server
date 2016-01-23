@@ -179,6 +179,7 @@ DEPENDENCIES
   rails (= 4.2.5)
   rails-api
   rb-readline
+  responders (~> 2.0)
   rolify
   sdoc (~> 0.4.0)
   spring

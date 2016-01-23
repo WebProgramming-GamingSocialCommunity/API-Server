@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
-  devise_for :users, only: []
+
+  scope '/v1' do
+    devise_for :users, :defaults => { :format => 'json' }, :controllers => { :sessions => "v1/sessions" }
+  end
 
   namespace :v1, defaults: { format: :json } do
     get "/users/show" => "users#show", as: :user_url

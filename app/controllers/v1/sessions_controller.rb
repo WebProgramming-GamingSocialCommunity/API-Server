@@ -1,7 +1,7 @@
 module V1
-  class SessionsController < ApplicationController
-    skip_before_action :authenticate_user!
-
+  class SessionsController < Devise::SessionsController
+    skip_before_action :authenticate_user
+    respond_to :json
     # POST /v1/login
     def create
       @user = User.find_for_database_authentication(email: params[:email])

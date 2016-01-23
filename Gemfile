@@ -30,7 +30,7 @@ gem 'active_model_serializers'
 gem 'devise'
 gem 'cancancan'
 gem 'rolify'
-gem 'responders', '~> 2.0'
+gem 'responders'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

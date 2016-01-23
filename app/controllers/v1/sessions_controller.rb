@@ -15,6 +15,11 @@ module V1
       end
     end
 
+    def destroy
+      sign_out
+      render :nothing => true, :status => 204
+     end
+
     private
 
     def invalid_login_attempt

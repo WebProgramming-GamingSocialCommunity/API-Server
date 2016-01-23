@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :v1, defaults: { format: :json } do
     get "/users/show" => "users#show", as: :user_url
+    get "/posts/show" => "posts#show", as: :post_url
     resources :users
     resources :posts
     resource :login, only: [:create, :destroy], controller: :sessions

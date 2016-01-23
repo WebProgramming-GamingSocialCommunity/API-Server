@@ -1,5 +1,6 @@
 module V1
   class PostsController < ApplicationController
+    skip_before_action :authenticate_user!, only: [:index, :show]
     before_action :set_post, only: [:show, :edit, :update, :destroy]
 
     # GET /posts
@@ -11,7 +12,8 @@ module V1
     # GET /posts/1
     # GET /posts/1.json
     def show
-      render json: Post.find(params[:id])
+      @post = Post.find(params[:id])
+      render json: { :post => @post }
     end
 
     # POST /posts
@@ -19,12 +21,10 @@ module V1
     def create
       @post = Post.new(post_params)
 
-      respond_to do |format|
-        if @post.save
-          format.json { render :show, status: :created, location: @post }
-        else
-          format.json { render json: @post.errors, status: :unprocessable_entity }
-        end
+      if @post.save
+        render :show, status: :created, location: :v1_post_url
+      else
+        render json: @post.errors, status: :unprocessable_entity
       end
     end
 
@@ -38,6 +38,6 @@ module V1
       def post_params
         params.require(:post).permit(:title, :content, :user_id)
       end
-    
+
   end
 end

@@ -1,6 +1,8 @@
 module V1
   class UsersController < ApplicationController
-    skip_before_action :authenticate_user_from_token!, only: [:index, :show, :create]
+    skip_before_action :authenticate_user!, only: [:index, :show, :create]
+    before_action :logged_in_user, only: [:edit, :update, :destroy]
+    before_action :correct_user, only: [:edit, :update, :destroy]
 
     def index
       render json: User.all
@@ -9,7 +11,9 @@ module V1
 
     def show
       @user = User.find(params[:id])
-      render json: { :user => @user }
+      @posts = @user.posts
+      render json: { :user => @user,
+                     :posts => @posts }
     end
 
     # POST /users
@@ -28,14 +32,12 @@ module V1
     # PATCH/PUT /users/1.json
     def update
       @user = set_user
-      respond_to do |format|
-        if @user.update(user_params)
-          #format.html { redirect_to @user, notice: 'User was successfully updated.' }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          #format.html { render :edit }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+      if @user.update(user_params)
+        #format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        render :show, status: :ok, location: :v1_user_url
+      else
+        #format.html { render :edit }
+        render json: @user.errors, status: :unprocessable_entity
       end
     end
 
@@ -60,6 +62,19 @@ module V1
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:email, :username, :password, :password_confirmation)
+    end
+
+    def logged_in_user
+      unless user_signed_in?
+        render status: :unauthorized
+      end
+    end
+
+    def correct_user
+      @user = User.find(params[:id])
+      unless @user === current_user
+          render status: :unauthorized
+      end
     end
   end
 end

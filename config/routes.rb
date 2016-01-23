@@ -5,6 +5,6 @@ Rails.application.routes.draw do
     get "/users/show" => "users#show", as: :user_url
     resources :users
     resources :posts
-    resource :login, only: [:create], controller: :sessions
+    resource :login, only: [:create, :destroy], controller: :sessions
   end
 end

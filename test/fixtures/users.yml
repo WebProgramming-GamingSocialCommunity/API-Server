@@ -3,9 +3,21 @@
 # This model initially had no columns defined.  If you add columns to the
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-#two: {}
-#  column: value
+
+one:
+  id: 3
+  username: Alice
+  email: 123@ex.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+michael:
+  id: 1
+  username: Michael Example
+  email: michael@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+archer:
+  id: 2
+  username: Sterling Archer
+  email: duchess@example.gov
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

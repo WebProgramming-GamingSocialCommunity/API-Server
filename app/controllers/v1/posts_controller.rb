@@ -2,7 +2,7 @@ module V1
   class PostsController < ApplicationController
     skip_before_action :authenticate_user!
     before_action :set_post, only: [:show, :edit, :update, :destroy]
-    before_action :user_signed_in, except: [:index, :show]
+    #before_action :logged_in_user, except: [:index, :show]
 
     # GET /posts
     # GET /posts.json
@@ -38,6 +38,12 @@ module V1
       # Never trust parameters from the scary internet, only allow the white list through.
       def post_params
         params.require(:post).permit(:title, :content, :user_id)
+      end
+
+      def logged_in_user
+        unless user_signed_in?
+          render status: :unauthorized
+        end
       end
 
   end

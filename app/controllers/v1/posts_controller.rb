@@ -1,7 +1,8 @@
 module V1
   class PostsController < ApplicationController
-    skip_before_action :authenticate_user!, only: [:index, :show]
+    skip_before_action :authenticate_user!
     before_action :set_post, only: [:show, :edit, :update, :destroy]
+    before_action :user_signed_in, except: [:index, :show]
 
     # GET /posts
     # GET /posts.json

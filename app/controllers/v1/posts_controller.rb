@@ -14,7 +14,9 @@ module V1
     # GET /posts/1.json
     def show
       @post = Post.find(params[:id])
-      render json: { :post => @post }
+      @user = User.find(@post[:user_id])
+      render json: { :post => @post,
+                     :user => @user }
     end
 
     # POST /posts
